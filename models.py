@@ -1,4 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy #uses extention in this file
+from flask.ext.sqlalchemy import SQLAlchemy #uses extention in this file
 from werkzeug import generate_password_hash, check_password_hash
 
 db = SQLAlchemy() #creates database variable
