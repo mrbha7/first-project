@@ -20,25 +20,27 @@
           <form method="POST" action="/home">
             {{ form.hidden_tag() }}
 
-            <div class="form-group">
-              {% if form.address.errors %}
-                {% for error in form.address.errors %}
-                  <p class="error-message">{{ error }}</p>
-                {% endfor %}
-              {% endif %}
+          <div class="form-group">
+            {% if form.address.errors %}
+              {% for error in form.address.errors %}
+                <p class="error-message">{{ error }}</p>
+              {% endfor %}
+            {% endif %}
 
-              {{ form.address(placeholder="Explore nearby") }}
-            </div>
+            {{ form.address(placeholder= "Explore nearby") }}
+          </div>
 
-            {{ form.submit(class="btn-primary") }}
-          </form>
-        </div>
-
-        <div id="mapid"></div>
+          {{ form.submit(class="btn-primary") }}
+        </form>
       </div>
 
-      <div class="clearfix"></div>
+      <div id="map"></div>
     </div>
+
+    <div class="clearfix"></div>
+    <a href="{{ url_for('logout') }}" class="btn-secondary">Log out</a>
+    </div>
+
   </main>
 
   <script>
@@ -63,5 +65,4 @@
         .addTo(map);
     }
   </script>
-
 {% endblock %}
