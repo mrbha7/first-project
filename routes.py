@@ -3,7 +3,7 @@ from models import db, User, Place #import db variable
 from forms import SignupFrom, LoginForm, AddressForm
 app = Flask(__name__) #creates instance of flask class
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/learningflask' #used to attach database to application look at flasksqlalchemy page for more info
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://oxdhhmjibmrsog:c8ba8f82e10c483d505b7b8335f0bb65551fe87f32135abeaf35d6ac568c30d6@ec2-23-23-245-89.compute-1.amazonaws.com:5432/dcskvq3fhjffd2' #used to attach database to application look at flasksqlalchemy page for more info
 db.init_app(app) #initialize app to use this setup
 
 app.secret_key = "development-key" #protects against XSS
