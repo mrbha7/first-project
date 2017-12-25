@@ -74,20 +74,22 @@ def home():
     my_coordinates = (40.1020, 88.2272)
 
     if request.method == 'POST':
-        if form.validate() == False:
-            return render_template('home.html', form= form)
-        else:
-            # get the Address
-            address = form.address.data
-            # query for places around it
-            p = Place()
-            my_coordinates = p.address_to_latlng(address)
-            places = p.query(address)
-            # return those results
-            return render_template('home.html', form = form, my_coordinates = my_coordinates, places = places)
+      if form.validate() == False:
+        my_coordinates = (40.1020, 88.2272)
+        return render_template('home.html', form=form, my_coordinates=my_coordinates)
+      else:
+        # get the address
+        address = form.address.data
+        # query for places around it
+        p = Place()
+        my_coordinates = p.address_to_latlng(address)
+        places = p.query(address)
+
+        # return those results
+        return render_template('home.html', form=form, my_coordinates=my_coordinates, places=places)
 
     elif request.method == 'GET':
-        return render_template("home.html", form = form, my_coordinates = my_coordinates, places = places)
+      return render_template("home.html", form=form, my_coordinates=my_coordinates, places=places)
 
 if __name__ == "__main__":
     app.run(debug=True) #turns on debugging for the page
