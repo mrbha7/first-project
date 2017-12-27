@@ -79,11 +79,11 @@ def home():
     form = AddressForm()
 
     places = []
-    my_coordinates = (40.1020, 88.2272)
+    my_coordinates = (41.7508, 88.1535)
 
     if request.method == 'POST':
       if form.validate() == False:
-        my_coordinates = (40.1020, 88.2272)
+        my_coordinates = (41.7508, 88.1535)
         return render_template('home.html', form=form, my_coordinates=my_coordinates)
       else:
         # get the address
