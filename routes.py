@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for #import class and function
 from models import db, User, Place #import db variable
-from forms import SignupFrom, LoginForm, AddressForm
+from forms import SignupFrom, LoginForm, AddressForm, BudgetForm
 app = Flask(__name__) #creates instance of flask class
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://oxdhhmjibmrsog:c8ba8f82e10c483d505b7b8335f0bb65551fe87f32135abeaf35d6ac568c30d6@ec2-23-23-245-89.compute-1.amazonaws.com:5432/dcskvq3fhjffd2' #used to attach database to application look at flasksqlalchemy page for more info
@@ -90,6 +90,53 @@ def home():
 
     elif request.method == 'GET':
       return render_template("home.html", form=form, my_coordinates=my_coordinates, places=places)
+
+@app.route("/budget", methods=["GET","POST"])
+def budget():
+    if 'email' not in session: #checks to see if logged in or not
+        return redirect(url_for('login'))
+
+    form = BudgetForm()
+
+    usable_money = 0
+    food_estimate = 0
+    daily_food = 0
+    left = 0
+    days = 0
+
+    if request.method == "POST":
+        if form.validate() == False: #redirects to same page if failed
+            return render_template("budget.html", form=form, usable_money = usable_money, food_estimate = food_estimate, daily_food = daily_food, left = left, days = days)
+
+        else:
+            budget = form.budget.data
+            days = form.days.data
+            nights = form.nights.data
+            hotel = form.hotel.data
+            rental = form.cRental.data
+            
+            if days > 0 and nights > 0 and hotel > 0 and rental > 0:
+                usable_money = budget-(hotel*nights)-(rental*days)
+            elif days > 0 and rental > 0:
+                usable_money = budget-(rental*days)
+            elif nights > 0 and hotel > 0:
+                usable_money = budget-(hotel*nights)
+            else:
+                usable_money = budget
+
+            if days > 0:
+                food_estimate = usable_money*.4
+                daily_food = food_estimate/days
+
+
+            left = usable_money-food_estimate
+
+            return render_template('budget.html', form=form, usable_money = usable_money, food_estimate = food_estimate, daily_food = daily_food, left = left, days = days)
+
+    elif request.method == 'GET':
+      return render_template('budget.html', form=form, usable_money = usable_money, food_estimate = food_estimate, daily_food = daily_food, left = left, days = days)
+
+
 
 if __name__ == "__main__":
     app.run(debug=True) #turns on debugging for the page

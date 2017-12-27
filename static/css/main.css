@@ -45,6 +45,7 @@ a {
   color: #3a3a3a;
   float: left;
   width: 340px;
+
 }
 
 .section-device {
@@ -163,7 +164,6 @@ header {
   margin-right: 10px;
 }
 
-
 /*
  * Sign up
  */
@@ -265,7 +265,11 @@ header {
   font-size: 13px;
   margin: 0;
 }
-
+.section-tabs article .price {
+  color: #6e6e6e;
+  font-size: 16px;
+  margin: 0;
+}
 .section-map {
   float: right;
   width: 660px;
