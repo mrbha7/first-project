@@ -21,20 +21,28 @@ def signup():
     if 'email' in session:
         return redirect(url_for('home'))
     form = SignupFrom()
-
+    temp = 0
     if request.method == 'POST':
         if form.validate() == False:
-            return render_template('signup.html', form=form)
+            return render_template('signup.html', form=form, temp = temp)
         else:
-            newuser = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
-            db.session.add(newuser)
-            db.session.commit()
+            email = form.email.data
+            user = User.query.filter_by(email=email).first()
 
-            session['email'] = newuser.email #sets email for session object
-            return redirect(url_for('home'))
+            if user is not None:
+                temp = 1
+                return render_template('signup.html', form=form, temp = temp)
+            else:
+                temp = 0
+                newuser = User(form.first_name.data, form.last_name.data, form.email.data, form.password.data)
+                db.session.add(newuser)
+                db.session.commit()
+
+                session['email'] = newuser.email #sets email for session object
+                return redirect(url_for('home'))
 
     elif request.method == 'GET':
-        return render_template('signup.html',form = form)
+        return render_template('signup.html',form = form, temp = temp)
 
 @app.route("/login", methods=["GET","POST"]) #routing to login page
 def login():
@@ -114,7 +122,7 @@ def budget():
             nights = form.nights.data
             hotel = form.hotel.data
             rental = form.cRental.data
-            
+
             if days > 0 and nights > 0 and hotel > 0 and rental > 0:
                 usable_money = budget-(hotel*nights)-(rental*days)
             elif days > 0 and rental > 0:
