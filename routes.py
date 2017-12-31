@@ -16,7 +16,7 @@ def index():
 def about():
     return render_template("about.html")
 
-@app.route("/signup", methods=['GET','POST']) # renders signup page
+@app.route("/signup", methods=['GET','POST']) # renders signup page using routes    
 def signup():
     if 'email' in session:
         return redirect(url_for('home'))
